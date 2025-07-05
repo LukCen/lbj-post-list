@@ -21,6 +21,9 @@
   font-size: 10px;
 }
 
+button, a {
+  cursor: pointer;
+}
 
 h1 {
   font-size: 3.2rem;

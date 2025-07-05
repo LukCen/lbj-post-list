@@ -5,20 +5,29 @@ import { ref } from 'vue';
 const postData = await generatePostData(10)
 
 
-const showMore = ref(false)
+const expandedPosts = ref(new Set<number>())
+
+// identyfikuje który post użytkownik chce rozszerzyć, bazując na jego parametrze id
+function toggleShowMore(postId: number){
+  if(expandedPosts.value.has(postId)){
+    expandedPosts.value.delete(postId)
+  } else {
+    expandedPosts.value.add(postId)
+  }
+}
 
 </script>
 
 <template>
-  <div v-for="post in postData" class="card">
+  <div v-for="post in postData" :key="post.id" class="card">
     <img :src="post.img" alt="">
-    <div :class="{'show-more': showMore}" class="text">
+    <div :class="{'show-more': expandedPosts.has(post.id)}" class="text">
       <h2 class="post_title capitalize text-clamp">{{ post.title }}</h2>
       <p>By <span class="text-seawater font-semibold">{{ post.author.name }}</span></p>
       <p class="post_contents text-clamp">{{ post.contents }}</p>
     </div>
     <div class="buttons">
-      <button @click="showMore = !showMore" class="text-clear-sky hover:text-seawater font-semibold">Sprawdź więcej...</button>
+      <button @click="toggleShowMore(post.id)" class="text-clear-sky hover:text-seawater text-xl font-semibold">Sprawdź więcej...</button>
       <button class="btn btn-delete"> <Trash2/> </button>
     </div>
   </div>
@@ -39,7 +48,7 @@ max-width: initial;
 @reference "../style.css";
 
 .card {
-  @apply flex flex-col items-center justify-between bg-white rounded-md overflow-hidden gap-4 p-4 shadow-sm;
+  @apply flex flex-col items-center self-start justify-between bg-white rounded-md overflow-hidden gap-4 p-4 shadow-sm;
 
 }
 
