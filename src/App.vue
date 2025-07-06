@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { onMounted } from 'vue';
 import CardContainer from './components/CardContainer.vue';
-
+import { store } from './store';
+onMounted(() => {
+  store.dispatch('fetchPosts')
+})
 
 
 </script>

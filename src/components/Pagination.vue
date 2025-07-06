@@ -1,0 +1,56 @@
+
+<script setup lang="ts">
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore()
+// const posts = computed(() => store.getters.paginatedPosts)
+const totalPages = computed(() => store.getters.totalPages)
+const currentPage = computed(() => store.state.currentPage)
+
+function goToPage(page: number){
+  store.commit('setPage', page)
+  console.log(currentPage.value)
+}
+
+function previousPage(){
+  if(currentPage.value > 1){
+    goToPage(currentPage.value - 1)
+  }
+}
+
+function nextPage(){
+  if(currentPage.value < totalPages.value){
+    goToPage(currentPage.value + 1)
+  }
+}
+
+
+</script>
+<template>
+  <div class="pagination">
+    <button class="" @click="previousPage">Poprzedni</button>
+    <div class="pagination_pages">
+      <button v-for="page in totalPages" :key="page" :class="{active: page === currentPage.value}" @click="goToPage(page)">{{ page }}</button>
+    </div>
+    <button class="" @click="nextPage">Następny</button>
+  </div>
+</template>
+
+<style scoped>
+@reference "../style.css";
+
+.pagination {
+  @apply flex gap-2 px-1 col-span-2 w-full justify-center;
+}
+.pagination_pages {
+  @apply flex gap-1;
+}
+.pagination_pages > * {
+  @apply border border-midnight p-1 min-h-[30px] min-w-[30px] text-[16px];
+}
+
+.active {
+  @apply bg-midnight text-white;
+}
+</style>

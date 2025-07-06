@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Card from './Card.vue';
+import Pagination from './Pagination.vue';
 
 </script>
 
@@ -7,6 +8,7 @@ import Card from './Card.vue';
 
   <section class="card_container">
     <Card/>
+    <Pagination/>
   </section>  
 </template>
  <style scoped>

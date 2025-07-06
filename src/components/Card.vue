@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { Trash2 } from 'lucide-vue-next';
-import { generatePostData } from '../utils/api';
-import { ref } from 'vue';
-const postData = await generatePostData(10)
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
+
+
+// paginacja
+const store = useStore()
+const postData = computed(() => store.getters.paginatedPosts)
 
 
 const expandedPosts = ref(new Set<number>())
@@ -49,13 +53,11 @@ max-width: initial;
 
 .card {
   @apply flex flex-col items-center self-start justify-between bg-white rounded-md overflow-hidden gap-4 p-4 shadow-sm;
-
 }
 
 .text {
   @apply flex flex-col h-full gap-8;
 }
-
 
 .buttons {
   @apply flex w-full justify-between;

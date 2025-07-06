@@ -2,7 +2,7 @@
  * Generate data for a number of posts, based on data from /users and /posts apis.
  * Will return an array containing such data, ready to use inside the Card component.
  */
-export async function generatePostData(numberOfPosts: number = 1): Promise<PostData[] | null> {
+export async function generatePostData(): Promise<PostData[] | null> {
 
   const API_USER = "https://jsonplaceholder.typicode.com/users";
   const API_POST = "https://jsonplaceholder.typicode.com/posts";
@@ -19,24 +19,20 @@ export async function generatePostData(numberOfPosts: number = 1): Promise<PostD
 
     const users = await userData.json()
     const posts = await postData.json()
+    //TODO FIX TYPING
+    const result: PostData[] = posts.map((post: any) => {
+      const user = users.find((u: any) => u.id === post.userId)
+      const name = user?.name || "Unknown"
 
-    const result: PostData[] = []
-
-    for (let i = 0; i < numberOfPosts && i < posts.length; i++) {
-      const name = users.find((n: any) => n.id === posts[i].userId)?.name || "Unknown"
-      const post: PostData = {
-        id: posts[i].id,
-        title: posts[i].title,
-        contents: posts[i].body,
+      return {
+        id: post.id,
+        title: post.title,
+        contents: post.body,
         // TODO - FIX THE TYPING
-        // author_name: users.find((n: any) => n.id === posts[i].userId)?.name || "Unknown",
-        author: {
-          name: name
-        },
+        author: { name },
         img: `${API_PHOTO}/seed/${name}/300/300`
       }
-      result.push(post)
-    }
+    })
     return result
   } catch (e) {
     console.error(`Catch block triggered: ${e}`)
