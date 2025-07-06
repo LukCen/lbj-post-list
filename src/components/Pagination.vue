@@ -4,9 +4,9 @@ import { computed } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore()
-// const posts = computed(() => store.getters.paginatedPosts)
+
 const totalPages = computed(() => store.getters.totalPages)
-const currentPage = computed(() => store.state.currentPage)
+const currentPage = computed(() => Number(store.state.currentPage))
 
 function goToPage(page: number){
   store.commit('setPage', page)
@@ -29,11 +29,12 @@ function nextPage(){
 </script>
 <template>
   <div class="pagination">
-    <button class="" @click="previousPage">Poprzedni</button>
+    <button class="pagination_controls" @click="previousPage">Poprzedni</button>
+    <!-- przyciski z numerami stron -->
     <div class="pagination_pages">
-      <button v-for="page in totalPages" :key="page" :class="{active: page === currentPage.value}" @click="goToPage(page)">{{ page }}</button>
+      <button v-for="page in totalPages" :key="page" :class="{active: page === currentPage}" @click="goToPage(page)">{{ page }}</button>
     </div>
-    <button class="" @click="nextPage">Następny</button>
+    <button class="pagination_controls" @click="nextPage">Następny</button>
   </div>
 </template>
 
@@ -46,10 +47,16 @@ function nextPage(){
 .pagination_pages {
   @apply flex gap-1;
 }
+.pagination_controls {
+  @apply text-[16px];
+}
 .pagination_pages > * {
   @apply border border-midnight p-1 min-h-[30px] min-w-[30px] text-[16px];
 }
 
+.pagination_controls {
+  @apply hover:text-seawater
+}
 .active {
   @apply bg-midnight text-white;
 }

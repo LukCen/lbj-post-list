@@ -7,10 +7,11 @@ import { generatePostData } from "../utils/api";
  * @param {Array} posts - lista postów które zostały wczytane
  * @param {number} currentPage - strona którą użytkownik wyświetla w danym momencie - kontroluje które posty są widoczne
  * @param {number} perPage - maksymalna ilość postów wyświetlana na każdej stronie
- */
+ 
 
-// dla uspokojenia TS - 'store' nie jest nigdzie wywoływany w tym pliku, więc TS marudzi przy deployu
+// dla uspokojenia TS - 'store' nie jest nigdzie wywoływany w tym pliku, więc TS i Vercel marudzą przy deployu
 // @ts-ignore
+*/
 export const store = createStore({
   state: () => ({
     posts: [] as PostData[],
@@ -18,7 +19,6 @@ export const store = createStore({
     perPage: 10,
     loading: false
   }),
-
   mutations: {
     setPosts(state, posts: PostData[]) {
       state.posts = posts
@@ -28,6 +28,9 @@ export const store = createStore({
     },
     setLoading(state, status: boolean) {
       state.loading = status
+    },
+    removePost(state, postId: number) {
+      state.posts = state.posts.filter(post => post.id !== postId)
     }
   },
   actions: {
@@ -43,10 +46,21 @@ export const store = createStore({
         console.error(`Błąd pobierania postów`, e)
       }
     },
+    async removePost({ commit }, postId: number) {
+      try {
+        fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
+          method: 'DELETE',
+        });
+        commit('removePost', postId)
+      } catch (e) {
+        console.error(`Błąd w usuwaniu posta: ${e}`)
+      }
+    },
     setPage({ commit }, page) {
       commit('setPage', page)
     }
   },
+
   getters: {
     paginatedPosts: (state) => {
       const start = (state.currentPage - 1) * state.perPage

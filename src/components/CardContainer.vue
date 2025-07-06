@@ -14,7 +14,7 @@ import Pagination from './Pagination.vue';
  <style scoped>
 @reference '../style.css';
 .card_container {
-  @apply grid w-full h-full gap-8 p-8 grid-cols-1 lg:grid-cols-2;
+  @apply flex flex-col lg:flex-row flex-wrap w-full h-full gap-8 p-8;
 }
 
 </style>

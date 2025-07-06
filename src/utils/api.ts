@@ -1,6 +1,6 @@
 /**
- * Generate data for a number of posts, based on data from /users and /posts apis.
- * Will return an array containing such data, ready to use inside the Card component.
+ * Wyciąga dane do utworzenia pojedyńczej 'karty
+ * Zwraca poszczególne posty w formie obiektu.
  */
 export async function generatePostData(): Promise<PostData[] | null> {
 
@@ -9,7 +9,7 @@ export async function generatePostData(): Promise<PostData[] | null> {
   const API_PHOTO = "https://picsum.photos"
 
   try {
-    // getting data from both apis in one call
+    // jedna promesa dla obu endpointów
     const [userData, postData] = await Promise.all([fetch(API_USER), fetch(API_POST)])
 
     if (!userData.ok || !postData.ok) {
@@ -30,7 +30,7 @@ export async function generatePostData(): Promise<PostData[] | null> {
         contents: post.body,
         // TODO - FIX THE TYPING
         author: { name },
-        img: `${API_PHOTO}/seed/${name}/300/300`
+        img: `${API_PHOTO}/seed/${name}/400/300`
       }
     })
     return result
@@ -39,4 +39,16 @@ export async function generatePostData(): Promise<PostData[] | null> {
     return null
   }
 
+}
+
+
+export async function deletePost(postId: number) {
+  try {
+    fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`, {
+      method: 'DELETE',
+    });
+
+  } catch (e) {
+    console.error(`Błąd w trakcie usuwania posta: ${e}`)
+  }
 }
