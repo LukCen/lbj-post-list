@@ -17,18 +17,17 @@ export async function generatePostData(): Promise<PostData[] | null> {
     }
 
 
-    const users = await userData.json()
-    const posts = await postData.json()
+    const users: ApiUser[] = await userData.json()
+    const posts: ApiPost[] = await postData.json()
     //TODO FIX TYPING
-    const result: PostData[] = posts.map((post: any) => {
-      const user = users.find((u: any) => u.id === post.userId)
+    const result: PostData[] = posts.map((post) => {
+      const user = users.find((u) => u.id === post.userId)
       const name = user?.name || "Unknown"
 
       return {
         id: post.id,
         title: post.title,
         contents: post.body,
-        // TODO - FIX THE TYPING
         author: { name },
         img: `${API_PHOTO}/seed/${name}/400/300`
       }

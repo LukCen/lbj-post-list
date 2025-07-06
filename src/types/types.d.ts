@@ -1,5 +1,5 @@
 /**
- * Contents of a single card inside the Card component
+ * Dane dla pojedyńczej karty w komponencie Card
  */
 type PostData = {
   id: number,
@@ -9,4 +9,18 @@ type PostData = {
     name: string
   },
   img: string
+}
+
+
+type ApiUser = {
+  id: number;
+  name: string;
+
+}
+
+type ApiPost = {
+  userId: number;
+  id: number;
+  title: string;
+  body: string;
 }
