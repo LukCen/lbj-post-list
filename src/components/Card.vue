@@ -39,7 +39,7 @@ function handleImageLoad(postId: number){
     <img @load="handleImageLoad(post.id)" :src="post.img" alt="">
     <div :class="{'show-more': expandedPosts.has(post.id)}" class="text">
       <h2 class="post_title capitalize text-clamp">{{ post.title }}</h2>
-      <p>By <span class="text-seawater font-semibold">{{ post.author.name }}</span></p>
+      <p>Autor: <span class="text-seawater font-semibold">{{ post.author.name }}</span></p>
       <p class="post_contents text-clamp">{{ post.contents }}</p>
     </div>
     <div class="buttons">
